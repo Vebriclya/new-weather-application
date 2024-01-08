@@ -6,40 +6,38 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0" />
 		<script src="htmx.min.js"></script>
-		<title>Document</title>
+		<link
+			rel="stylesheet"
+			href="styles.css" />
+		<title>The weather, peacefully</title>
 	</head>
-	<body
-		class="container"
-		hx-ext="multi-swap">
-		<input
-			type="search"
-			class="search"
-			id="search"
-			name="search"
-			placeholder="Enter location..."
-			hx-post="/search"
-			hx-target="#location-name"
-			hx-trigger="keyup[keyCode==13]" />
-		<div
-			class="location-name"
-			id="location-name"
-			hx-get="/location"
-			hx-trigger="load, keyup[keyCode==13] from:input">
-			This is a temporary location
+	<body class="container">
+		<div class="header">
+			<input
+				type="search"
+				class="search"
+				id="search"
+				name="search"
+				placeholder="Enter location..."
+				hx-post="/search"
+				hx-target="#location-name"
+				hx-trigger="keyup[keyCode==13]" />
+			<div
+				class="location-name"
+				id="location-name"
+				hx-get="/location"
+				hx-trigger="load, keyup[keyCode==13] from:input">
+				This is a temporary location
+			</div>
 		</div>
-		<div
-			class="weather-card"
-			id="weather-card"
-			hx-get="/weathercard"
-			hx-trigger="load, keyup[keyCode==13] from:input">
-			<!--date, moonphase, averagetemp, condition, humidity, rainchance, snowchance, windspeed-->
-		</div>
-		<div
-			class="current-temp"
-			id="current-temp"
-			hx-get="/temp"
-			hx-trigger="load, keyup[keyCode==13] from:input">
-			placeholder...
+		<div class="card-container">
+			<div
+				class="weather-card"
+				id="weather-card"
+				hx-get="/weathercard"
+				hx-trigger="load, keyup[keyCode==13] from:input">
+				<!--date, moonphase, averagetemp, condition, humidity, rainchance, snowchance, windspeed-->
+			</div>
 		</div>
 	</body>
 </html>

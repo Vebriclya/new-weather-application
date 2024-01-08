@@ -1,0 +1,107 @@
+body {
+	padding: 0;
+	border: 0;
+	margin: 0;
+	color: antiquewhite;
+}
+
+.container {
+	display: grid;
+	grid-template-rows: 50px 9fr;
+	grid-template-columns: repeat(3, 1fr);
+	width: 100vw;
+	height: 100vh;
+	background-image: url(images/bg3.gif);
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.header {
+	grid-template-columns: repeat(2, 1fr);
+	grid-row-start: 1;
+	grid-column: 1/4;
+	display: grid;
+	padding-top: 5px;
+}
+
+.search {
+	grid-row-start: 1;
+	grid-column-start: 2;
+	justify-self: end;
+	padding-left: 10px;
+	height: 30px;
+	width: 343px;
+	margin-top: 10px;
+	margin-right: 11px;
+	border-radius: 8px;
+	border: 1px solid rgb(128, 128, 128);
+	background-color: rgba(107, 105, 105, 0.678);
+	color: antiquewhite;
+	font-weight: bold;
+}
+
+::placeholder {
+	color: antiquewhite;
+	font-style: italic;
+	font-weight: 100;
+}
+
+.location-name {
+	grid-row-start: 1;
+	grid-column-start: 1;
+	margin-top: 3px;
+	margin-left: 30px;
+	font-size: 40px;
+}
+
+.card-container {
+	grid-column: 3;
+	display: grid;
+	grid-auto-columns: min-content;
+	justify-content: right;
+}
+
+.weather-section {
+	display: grid;
+	grid-template-rows: 1fr 3fr;
+	padding-left: 10px;
+}
+
+.day {
+	grid-column: 1;
+	font-size: 35px;
+}
+
+.temp-text {
+	grid-column: 2;
+	font-size: 35px;
+}
+
+.weather-details {
+	display: flex;
+	flex-direction: column;
+}
+
+.moon-phase {
+	font-size: 20px;
+}
+
+.opaque-background {
+	display: inline-block;
+	margin: 10px;
+	border-radius: 15px;
+	padding: 10px;
+	background-color: rgba(107, 105, 105, 0.678);
+	width: 325px;
+}
+
+.weather-card {
+	width: 100%;
+}
+
+.vl {
+	border-bottom: 1px solid antiquewhite;
+	width: 260px;
+}

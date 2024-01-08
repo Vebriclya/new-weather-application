@@ -66,14 +66,16 @@ app.get("/weathercard", async (req, res) => {
 		}
 
 		html += `
-			<div class="day" id="day">${formattedDate}</div>
-			<div class="moon-phase" id="moon-phase">${moonPhase}</div>
-			<div class="average-temp" id="average-temp">${averageTemp}°C</div>
+			<div class="opaque-background">
+			<div class="day" id="day">${formattedDate}, ${averageTemp}°c</div>
+			<div class="vl"></div>
+			<div class="moon-phase" id="moon-phase">The moon is ${moonPhase}</div>
 			<div class="condition" id="condition">${condition}</div>
 			<div class="humidity" id="humidity">${humidity}% humidity</div>
 			${mightRain}
 			${mightSnow}
 			${isWindy}
+			</div>
 		<!--date, moonphase, averagetemp, condition, humidity, rainchance, snowchance, windspeed-->
 		`;
 	});
