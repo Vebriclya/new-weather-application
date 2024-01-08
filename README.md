@@ -6,4 +6,4 @@ Wanted to see how much easier it was to write in HTMX. Spoiler - _a lot_.
 
 ### To Do
 
-- Don't display previous locations weather if new location is invalid
+- Maybe add optional music?
