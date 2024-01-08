@@ -7,6 +7,14 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <input type="search"
+    class="search"
+    id="search"
+    name="search"
+    placeholder="Enter location..."
+    hx-post="/search"
+    hx-target="#location-name"
+    hx-trigger="keyup[keyCode==13]">
+    <div class="location-name" id="location-name">This is a temporary location</div>
 </body>
 </html>
