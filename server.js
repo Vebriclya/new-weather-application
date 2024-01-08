@@ -14,7 +14,7 @@ app.use(express.json());
 
 const apiKey = "5a27d69e27f140f58e7141821230211";
 let location = "sproughton";
-const days = "1";
+const days = "3";
 let apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=${days}`;
 
 app.get("/location", async (req, res) => {
@@ -27,6 +27,61 @@ app.get("/location", async (req, res) => {
 });
 
 app.get("/weathercard", async (req, res) => {
+	const response = await fetch(apiUrl);
+	const weatherDetails = await response.json();
+	const forecastdays = weatherDetails.forecast.forecastday;
+	let html = ``;
+
+	forecastdays.forEach((day) => {
+		const date = new Date(day.date);
+		const formattedDate = format(date, "eeee");
+		const rain = day.day.daily_chance_of_rain;
+		let mightRain = "";
+		const snow = day.day.daily_chance_of_snow;
+		let mightSnow = "";
+		const wind = day.day.maxwind_mph;
+		let isWindy = "";
+		const moonPhase = day.astro.moon_phase;
+		const averageTemp = day.day.avgtemp_c;
+		const condition = day.day.condition.text;
+		const humidity = day.day.avghumidity;
+
+		// Check for rain
+		if (rain > 50) {
+			mightRain = `<div class="rain" id ="rain">${rain}% chance of rain</div>`;
+		} else {
+			mightRain = ``;
+		}
+		// Check for snow
+		if (snow > 50) {
+			mightSnow = `<div class="snow" id ="snow">${snow}% chance of snow</div>`;
+		} else {
+			mightSnow = "";
+		}
+		// Check for wind
+		if (wind > 30) {
+			isWindy = `Wind speeds of ${wind}/mph expected`;
+		} else {
+			isWindy = "";
+		}
+
+		html += `
+			<div class="day" id="day">${formattedDate}</div>
+			<div class="moon-phase" id="moon-phase">${moonPhase}</div>
+			<div class="average-temp" id="average-temp">${averageTemp}°C</div>
+			<div class="condition" id="condition">${condition}</div>
+			<div class="humidity" id="humidity">${humidity}% humidity</div>
+			${mightRain}
+			${mightSnow}
+			${isWindy}
+		<!--date, moonphase, averagetemp, condition, humidity, rainchance, snowchance, windspeed-->
+		`;
+	});
+
+	res.send(html);
+});
+
+/* app.get("/weathercard", async (req, res) => {
 	const response = await fetch(apiUrl);
 	const weatherDetails = await response.json();
 	const forecastday = weatherDetails.forecast.forecastday[0];
@@ -73,7 +128,7 @@ app.get("/weathercard", async (req, res) => {
 		`;
 
 	res.send(html);
-});
+}); */
 
 app.get("/temp", async (req, res) => {
 	const response = await fetch(apiUrl);
