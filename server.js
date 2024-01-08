@@ -13,23 +13,31 @@ app.use(express.json());
 /* ALL YOUR SERVER STUFF WILL GO HERE */
 
 const apiKey = "5a27d69e27f140f58e7141821230211";
-const location = "sproughton";
+let location = "sproughton";
 const days = "1";
+let apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=${days}`;
 
 app.get("/location", async (req, res) => {
-    const defaultURL = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=${days}`;
-    const response = await fetch(defaultURL);
-    const weatherDetails = await response.json();
+	const response = await fetch(apiUrl);
+	const weatherDetails = await response.json();
 
-    res.send(`${weatherDetails.location.name}, ${weatherDetails.location.country}`);
-}
-);
+	res.send(
+		`${weatherDetails.location.name}, ${weatherDetails.location.country}`
+	);
+});
+
+app.get("/temp", async (req, res) => {
+	const response = await fetch(apiUrl);
+	const weatherDetails = await response.json();
+
+	res.send(`${weatherDetails.current.temp_c}°C`);
+});
 
 app.post("/search", async (req, res) => {
 	const searchTerm = req.body.search.toLowerCase();
 
 	try {
-		const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${searchTerm}&days=${days}`;
+		apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${searchTerm}&days=${days}`;
 		// Make HTTP request
 		const response = await fetch(apiUrl);
 
@@ -43,8 +51,10 @@ app.post("/search", async (req, res) => {
 			res.send(`${weatherDetails.error.message}`);
 		} else {
 			// Use the parsed data to construct the location string
-			const location = `${weatherDetails.location.name}, ${weatherDetails.location.country}`;
-			res.status(200).send(location);
+			location = weatherDetails.location.name;
+			console.log(location);
+			const locationString = `${location}, ${weatherDetails.location.country}`;
+			res.status(200).send(locationString);
 		}
 	} catch (error) {
 		console.error("There was an error fetching the data", error);

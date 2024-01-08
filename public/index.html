@@ -8,7 +8,9 @@
 		<script src="htmx.min.js"></script>
 		<title>Document</title>
 	</head>
-	<body class="container">
+	<body
+		class="container"
+		hx-ext="multi-swap">
 		<input
 			type="search"
 			class="search"
@@ -22,11 +24,17 @@
 			class="location-name"
 			id="location-name"
 			hx-get="/location"
-			hx-trigger="load">
+			hx-trigger="load, keyup[keyCode==13] from:input">
 			This is a temporary location
 		</div>
 		<div class="weather-card">
-			<div class="current-temp"></div>
+			<div
+				class="current-temp"
+				id="current-temp"
+				hx-get="/temp"
+				hx-trigger="load, keyup[keyCode==13] from:input">
+				placeholder...
+			</div>
 		</div>
 	</body>
 </html>
