@@ -27,14 +27,19 @@
 			hx-trigger="load, keyup[keyCode==13] from:input">
 			This is a temporary location
 		</div>
-		<div class="weather-card">
-			<div
-				class="current-temp"
-				id="current-temp"
-				hx-get="/temp"
-				hx-trigger="load, keyup[keyCode==13] from:input">
-				placeholder...
-			</div>
+		<div
+			class="weather-card"
+			id="weather-card"
+			hx-get="/weathercard"
+			hx-trigger="load, keyup[keyCode==13] from:input">
+			<!--date, moonphase, averagetemp, condition, humidity, rainchance, snowchance, windspeed-->
+		</div>
+		<div
+			class="current-temp"
+			id="current-temp"
+			hx-get="/temp"
+			hx-trigger="load, keyup[keyCode==13] from:input">
+			placeholder...
 		</div>
 	</body>
 </html>
