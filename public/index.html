@@ -15,6 +15,9 @@
     hx-post="/search"
     hx-target="#location-name"
     hx-trigger="keyup[keyCode==13]">
-    <div class="location-name" id="location-name">This is a temporary location</div>
+    <div class="location-name" id="location-name" hx-get="/location" hx-trigger="load">This is a temporary location</div>
+    <div class="weather-card">
+        <div class="current-temp"></div>
+    </div>
 </body>
 </html>

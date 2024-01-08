@@ -16,6 +16,15 @@ const apiKey = "5a27d69e27f140f58e7141821230211";
 const location = "sproughton";
 const days = "1";
 
+app.get("/location", async (req, res) => {
+    const defaultURL = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=${days}`;
+    const response = await fetch(defaultURL);
+    const weatherDetails = await response.json();
+
+    res.send(`${weatherDetails.location.name}, ${weatherDetails.location.country}`);
+}
+);
+
 app.post("/search", async (req, res) => {
 	const searchTerm = req.body.search.toLowerCase();
 
