@@ -20,52 +20,62 @@ let apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${loca
 app.get("/location", async (req, res) => {
 	const response = await fetch(apiUrl);
 	const weatherDetails = await response.json();
+	console.log(weatherDetails);
+	console.log(weatherDetails.error);
 
-	res.send(
-		`${weatherDetails.location.name}, ${weatherDetails.location.country}`
-	);
+	if (weatherDetails.error) {
+		res.send(`${weatherDetails.error.message}`);
+	} else {
+		res.send(
+			`${weatherDetails.location.name}, ${weatherDetails.location.country}`
+		);
+	}
 });
 
 app.get("/weathercard", async (req, res) => {
 	const response = await fetch(apiUrl);
 	const weatherDetails = await response.json();
-	const forecastdays = weatherDetails.forecast.forecastday;
 	let html = ``;
 
-	forecastdays.forEach((day) => {
-		const date = new Date(day.date);
-		const formattedDate = format(date, "eeee");
-		const rain = day.day.daily_chance_of_rain;
-		let mightRain = "";
-		const snow = day.day.daily_chance_of_snow;
-		let mightSnow = "";
-		const wind = day.day.maxwind_mph;
-		let isWindy = "";
-		const moonPhase = day.astro.moon_phase;
-		const averageTemp = day.day.avgtemp_c;
-		const condition = day.day.condition.text;
-		const humidity = day.day.avghumidity;
+	if (weatherDetails.error) {
+		html = `<div class="opaque-background">There's no one here...</div>`;
+	} else {
+		const forecastdays = weatherDetails.forecast.forecastday;
 
-		// Check for rain
-		if (rain > 50) {
-			mightRain = `<div class="rain" id ="rain">${rain}% chance of rain</div>`;
-		} else {
-			mightRain = ``;
-		}
-		// Check for snow
-		if (snow > 50) {
-			mightSnow = `<div class="snow" id ="snow">${snow}% chance of snow</div>`;
-		} else {
-			mightSnow = "";
-		}
-		// Check for wind
-		if (wind > 30) {
-			isWindy = `Wind speeds of ${wind}/mph expected`;
-		} else {
-			isWindy = "";
-		}
+		forecastdays.forEach((day) => {
+			const date = new Date(day.date);
+			const formattedDate = format(date, "eeee");
+			const rain = day.day.daily_chance_of_rain;
+			let mightRain = "";
+			const snow = day.day.daily_chance_of_snow;
+			let mightSnow = "";
+			const wind = day.day.maxwind_mph;
+			let isWindy = "";
+			const moonPhase = day.astro.moon_phase;
+			const averageTemp = day.day.avgtemp_c;
+			const condition = day.day.condition.text;
+			const humidity = day.day.avghumidity;
 
-		html += `
+			// Check for rain
+			if (rain > 50) {
+				mightRain = `<div class="rain" id ="rain">${rain}% chance of rain</div>`;
+			} else {
+				mightRain = ``;
+			}
+			// Check for snow
+			if (snow > 50) {
+				mightSnow = `<div class="snow" id ="snow">${snow}% chance of snow</div>`;
+			} else {
+				mightSnow = "";
+			}
+			// Check for wind
+			if (wind > 30) {
+				isWindy = `Wind speeds of ${wind}/mph expected`;
+			} else {
+				isWindy = "";
+			}
+
+			html += `
 			<div class="opaque-background">
 			<div class="day" id="day">${formattedDate}, ${averageTemp}°c</div>
 			<div class="vl"></div>
@@ -78,65 +88,10 @@ app.get("/weathercard", async (req, res) => {
 			</div>
 		<!--date, moonphase, averagetemp, condition, humidity, rainchance, snowchance, windspeed-->
 		`;
-	});
+		});
+	}
 
 	res.send(html);
-});
-
-/* app.get("/weathercard", async (req, res) => {
-	const response = await fetch(apiUrl);
-	const weatherDetails = await response.json();
-	const forecastday = weatherDetails.forecast.forecastday[0];
-	const rain = forecastday.day.daily_chance_of_rain;
-	let mightRain = "";
-	const snow = forecastday.day.daily_chance_of_snow;
-	let mightSnow = "";
-	const wind = forecastday.day.maxwind_mph;
-	let isWindy = "";
-	const moonPhase = forecastday.astro.moon_phase;
-	const averageTemp = forecastday.day.avgtemp_c;
-	const condition = forecastday.day.condition.text;
-	const humidity = forecastday.day.avghumidity;
-
-	console.log(snow);
-	// Check for rain
-	if (rain > 50) {
-		mightRain = `<div class="rain" id ="rain">${rain}% chance of rain</div>`;
-	} else {
-		mightRain = ``;
-	}
-	// Check for snow
-	if (snow > 50) {
-		mightSnow = `<div class="snow" id ="snow">${snow}% chance of snow</div>`;
-	} else {
-		mightSnow = "";
-	}
-	// Check for wind
-	if (wind > 30) {
-		isWindy = `Wind speeds of ${wind}/mph expected`;
-	} else {
-		isWindy = "";
-	}
-
-	const html = `
-			<div class="moon-phase" id="moon-phase">${moonPhase}</div>
-			<div class="average-temp" id="average-temp">${averageTemp}°C</div>
-			<div class="condition" id="condition">${condition}</div>
-			<div class="humidity" id="humidity">${humidity}% humidity</div>
-			${mightRain}
-			${mightSnow}
-			${isWindy}
-		<!--date, moonphase, averagetemp, condition, humidity, rainchance, snowchance, windspeed-->
-		`;
-
-	res.send(html);
-}); */
-
-app.get("/temp", async (req, res) => {
-	const response = await fetch(apiUrl);
-	const weatherDetails = await response.json();
-
-	res.send(`Current temp: ${weatherDetails.current.temp_c}°C`);
 });
 
 app.post("/search", async (req, res) => {
